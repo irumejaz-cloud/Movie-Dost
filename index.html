@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Movie Dost — AI Movie Companion</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <!-- Unique font pairing: Bebas Neue (display) + DM Sans (body) -->
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ── Ambient background noise overlay ── -->
+  <div class="noise-overlay"></div>
+
+  <!-- ── App Shell ── -->
+  <div class="app-shell">
+
+    <!-- ═══════════════════════════════════════
+         SIDEBAR
+    ════════════════════════════════════════ -->
+    <aside class="sidebar" id="sidebar">
+
+      <!-- Logo -->
+      <div class="sidebar-logo">
+        <div class="logo-icon">🎬</div>
+        <div class="logo-text">
+          <span class="logo-main">MOVIE</span>
+          <span class="logo-sub">DOST</span>
+        </div>
+      </div>
+
+      <!-- Search bar -->
+      <div class="sidebar-search">
+        <input type="text" id="movieSearch" placeholder="Search movies..." autocomplete="off" />
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+      </div>
+
+      <!-- Categories -->
+      <nav class="sidebar-nav">
+        <p class="nav-label">GENRES</p>
+        <button class="nav-item active" data-genre="all">
+          <span class="nav-icon">🌟</span> All Movies
+        </button>
+        <button class="nav-item" data-genre="Action">
+          <span class="nav-icon">💥</span> Action
+        </button>
+        <button class="nav-item" data-genre="Drama">
+          <span class="nav-icon">🎭</span> Drama
+        </button>
+        <button class="nav-item" data-genre="Sci-Fi">
+          <span class="nav-icon">🚀</span> Sci-Fi
+        </button>
+        <button class="nav-item" data-genre="Comedy">
+          <span class="nav-icon">😂</span> Comedy
+        </button>
+        <button class="nav-item" data-genre="Thriller">
+          <span class="nav-icon">😰</span> Thriller
+        </button>
+
+        <p class="nav-label" style="margin-top:24px">LANGUAGES</p>
+        <button class="nav-item" data-language="Hindi">
+          <span class="nav-icon">🇮🇳</span> Bollywood
+        </button>
+        <button class="nav-item" data-language="English">
+          <span class="nav-icon">🇺🇸</span> Hollywood
+        </button>
+        <button class="nav-item" data-language="Korean">
+          <span class="nav-icon">🇰🇷</span> Korean
+        </button>
+        <button class="nav-item" data-language="Telugu">
+          <span class="nav-icon">🎬</span> Tollywood
+        </button>
+      </nav>
+
+      <!-- Sidebar footer -->
+      <div class="sidebar-footer">
+        <button class="footer-btn" id="clearChatBtn" title="Clear chat history">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/>
+          </svg>
+          Clear Chat
+        </button>
+        <p class="footer-note">Powered by Gemini AI</p>
+      </div>
+    </aside>
+
+    <!-- ═══════════════════════════════════════
+         MAIN CONTENT
+    ════════════════════════════════════════ -->
+    <main class="main-content">
+
+      <!-- ── Top Header ── -->
+      <header class="top-header">
+        <button class="hamburger" id="hamburgerBtn" aria-label="Toggle sidebar">
+          <span></span><span></span><span></span>
+        </button>
+        <h1 class="header-title">Movie Dost <span class="ai-badge">AI</span></h1>
+        <div class="header-status">
+          <span class="status-dot" id="statusDot"></span>
+          <span class="status-text" id="statusText">Ready</span>
+        </div>
+      </header>
+
+      <!-- ── Movie Cards Strip (shown when browsing) ── -->
+      <section class="movies-strip" id="moviesStrip">
+        <div class="strip-header">
+          <h2 class="strip-title" id="stripTitle">Featured Movies</h2>
+          <button class="strip-close" id="stripClose">✕ Close</button>
+        </div>
+        <div class="movies-grid" id="moviesGrid">
+          <!-- Cards injected by JS -->
+        </div>
+      </section>
+
+      <!-- ── Chat Container ── -->
+      <section class="chat-container" id="chatContainer">
+
+        <!-- Welcome screen (shown when no messages) -->
+        <div class="welcome-screen" id="welcomeScreen">
+          <div class="welcome-glow"></div>
+          <div class="welcome-emoji">🎬</div>
+          <h2 class="welcome-title">Namaste, Movie Lover!</h2>
+          <p class="welcome-sub">Your AI movie companion is here. Ask me anything about movies — recommendations, reviews, or just movie chat!</p>
+          <div class="quick-prompts">
+            <button class="quick-btn" data-prompt="Recommend me a mind-bending sci-fi movie">🧠 Mind-bending Sci-Fi</button>
+            <button class="quick-btn" data-prompt="Best Bollywood movies of all time">🎭 Best Bollywood</button>
+            <button class="quick-btn" data-prompt="I'm feeling sad, suggest an uplifting movie">💛 Feel-good movies</button>
+            <button class="quick-btn" data-prompt="Top Korean movies to watch">🇰🇷 Korean Cinema</button>
+            <button class="quick-btn" data-prompt="Action movies with great stories">💥 Action + Story</button>
+            <button class="quick-btn" data-prompt="Movies to watch with family tonight">👨‍👩‍👧 Family Night</button>
+          </div>
+        </div>
+
+        <!-- Messages area -->
+        <div class="messages-area" id="messagesArea">
+          <!-- Messages injected by JS -->
+        </div>
+
+      </section>
+
+      <!-- ── Input Bar ── -->
+      <div class="input-bar">
+        <div class="input-wrapper">
+          <textarea
+            id="messageInput"
+            placeholder="Ask Movie Dost anything... e.g. 'Suggest a romantic Bollywood film'"
+            rows="1"
+            autocomplete="off"
+          ></textarea>
+          <button class="send-btn" id="sendBtn" aria-label="Send message">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <line x1="22" y1="2" x2="11" y2="13"/>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+            </svg>
+          </button>
+        </div>
+        <p class="input-hint">Movie Dost can make mistakes. Verify streaming availability before watching.</p>
+      </div>
+
+    </main>
+
+  </div>
+
+  <!-- ── Sidebar overlay (mobile) ── -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
